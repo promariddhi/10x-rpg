@@ -1,10 +1,10 @@
 export type SkillId =
   | "software-engineering"
-  | "debugging-and-performance"
+  | "debugging-performance"
   | "application-security"
   | "ai-engineering"
-  | "architecture-and-systems"
-  | "business-and-product";
+  | "architecture-systems"
+  | "business-product";
 
 export type SkillProgress = {
   xp: number;
