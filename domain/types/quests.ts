@@ -5,7 +5,10 @@ export type Quest = {
   title: string;
   xpReward: number;
   skillReward: Record<SkillId, number>;
+};
 
+export type QuestCompletion = {
+  id: string;
   startedAt?: string;
   completedAt?: string;
 };

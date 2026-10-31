@@ -1,6 +1,6 @@
 import { Quest } from "@/domain/types/quests";
 
-export const quests: Quest[] = [
+export const questList: Quest[] = [
   {
     id: "debug-001",
     title: "The Vanishing Variable",

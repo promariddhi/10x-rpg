@@ -1,13 +1,13 @@
-import { Quest } from "./quests";
+import { QuestCompletion } from "./quests";
 import { SkillId, SkillProgress } from "./skills";
 
-export type Player = {
+export type GameState = {
   name: string;
   avatar: string;
 
   totalXp: number;
   skills: Record<SkillId, SkillProgress>;
-  completedQuests: Quest[];
+  completedQuests: QuestCompletion[];
 
-  activeQuestId: string | null;
+  activeQuests: QuestCompletion[];
 };
