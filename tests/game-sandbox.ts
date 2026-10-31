@@ -14,4 +14,5 @@ function dispatch(action: GameActions) {
 
 dispatch({ type: "START_QUEST", questId: questList[0].id });
 dispatch({ type: "START_QUEST", questId: questList[1].id });
-dispatch({ type: "ABANDON_QUEST", questId: questList[1].id });
+dispatch({ type: "COMPLETE_QUEST", questId: questList[1].id });
+dispatch({ type: "MARK_INCOMPLETE", questId: questList[1].id });

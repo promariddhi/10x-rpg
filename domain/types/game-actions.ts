@@ -10,4 +10,8 @@ export type GameActions =
   | {
       type: "COMPLETE_QUEST";
       questId: string;
+    }
+  | {
+      type: "MARK_INCOMPLETE";
+      questId: string;
     };

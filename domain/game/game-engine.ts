@@ -1,7 +1,7 @@
 import { questList } from "@/data/quests";
 import { GameActions } from "../types/game-actions";
 import { GameState } from "../types/game-state";
-import { awardXp } from "../progression/xp";
+import { awardXp, revokeXp } from "../progression/xp";
 import { QuestCompletion } from "../types/quests";
 
 export function updateGame(action: GameActions, game: GameState): GameState {
@@ -12,6 +12,8 @@ export function updateGame(action: GameActions, game: GameState): GameState {
       return handleCompleteQuest(action.questId, game);
     case "ABANDON_QUEST":
       return handleAbandonQuest(action.questId, game);
+    case "MARK_INCOMPLETE":
+      return handleMarkIncomplete(action.questId, game);
     default:
       throw new Error("Unknown game action");
   }
@@ -82,5 +84,25 @@ function handleAbandonQuest(questId: string, game: GameState): GameState {
   return {
     ...game,
     activeQuests: game.activeQuests.filter((quest) => quest.id !== questId),
+  };
+}
+
+function handleMarkIncomplete(questId: string, game: GameState): GameState {
+  if (!game.completedQuests.some((quest) => quest.id === questId)) {
+    throw new Error("Quest not completed");
+  }
+
+  const questMetadata = questList.find((quest) => quest.id === questId);
+  if (!questMetadata) {
+    throw new Error("Quest not found!");
+  }
+
+  const newGameState = revokeXp(questMetadata, game);
+
+  return {
+    ...newGameState,
+    completedQuests: newGameState.completedQuests.filter(
+      (quest) => quest.id !== questId,
+    ),
   };
 }
