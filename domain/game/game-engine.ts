@@ -3,6 +3,7 @@ import { GameActions } from "../types/game-actions";
 import { GameState } from "../types/game-state";
 import { awardXp, revokeXp } from "../progression/xp";
 import { QuestCompletion } from "../types/quests";
+import { awardLevelAndRank } from "../progression/level-rank";
 
 export function updateGame(action: GameActions, game: GameState): GameState {
   switch (action.type) {
@@ -56,7 +57,7 @@ function handleCompleteQuest(questId: string, game: GameState): GameState {
     throw new Error("Quest not found!");
   }
 
-  const newGameState = awardXp(questMetadata, game);
+  let newGameState = awardXp(questMetadata, game);
 
   const completedQuest: QuestCompletion = {
     ...quest,
@@ -66,6 +67,8 @@ function handleCompleteQuest(questId: string, game: GameState): GameState {
   newGameState.activeQuests = game.activeQuests.filter(
     (quest) => quest.id !== questId,
   );
+
+  newGameState = awardLevelAndRank(newGameState);
 
   return newGameState;
 }
@@ -97,8 +100,9 @@ function handleMarkIncomplete(questId: string, game: GameState): GameState {
     throw new Error("Quest not found!");
   }
 
-  const newGameState = revokeXp(questMetadata, game);
+  let newGameState = revokeXp(questMetadata, game);
 
+  newGameState = awardLevelAndRank(newGameState);
   return {
     ...newGameState,
     completedQuests: newGameState.completedQuests.filter(

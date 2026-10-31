@@ -5,6 +5,9 @@ export function getInitialState(): GameState {
     name: "Player1",
     avatar: "avatar",
     totalXp: 0,
+    level: 0,
+    rank: "D",
+
     skills: {
       "software-engineering": { xp: 0 },
       "ai-engineering": { xp: 0 },
