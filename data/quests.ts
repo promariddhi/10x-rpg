@@ -4,6 +4,7 @@ export const questList: Quest[] = [
   {
     id: "debug-001",
     title: "The Vanishing Variable",
+    campaign: "campaign-001",
     xpReward: 100,
     skillReward: {
       "software-engineering": 20,
@@ -17,6 +18,7 @@ export const questList: Quest[] = [
   {
     id: "security-001",
     title: "The Broken Gate",
+    campaign: "campaign-002",
     xpReward: 150,
     skillReward: {
       "software-engineering": 0,
@@ -30,6 +32,7 @@ export const questList: Quest[] = [
   {
     id: "ai-001",
     title: "A Mind of Its Own",
+    campaign: "campaign-003",
     xpReward: 200,
     skillReward: {
       "software-engineering": 30,
@@ -43,6 +46,7 @@ export const questList: Quest[] = [
   {
     id: "architecture-001",
     title: "Blueprints of the Ancients",
+    campaign: "campaign-003",
     xpReward: 175,
     skillReward: {
       "software-engineering": 25,
@@ -56,6 +60,7 @@ export const questList: Quest[] = [
   {
     id: "product-001",
     title: "The Merchant's Dilemma",
+    campaign: "campaign-003",
     xpReward: 100,
     skillReward: {
       "software-engineering": 0,

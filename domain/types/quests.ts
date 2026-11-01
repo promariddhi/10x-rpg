@@ -3,6 +3,7 @@ import { SkillId } from "./skills";
 export type Quest = {
   id: string;
   title: string;
+  campaign: string; //campaign id
   xpReward: number;
   skillReward: Record<SkillId, number>;
 };

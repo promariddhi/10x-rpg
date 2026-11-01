@@ -18,6 +18,12 @@ export function getInitialState(): GameState {
     },
     completedQuests: [],
 
+    campaignProgress: {
+      "campaign-001": { completedPercent: 0 },
+      "campaign-002": { completedPercent: 0 },
+      "campaign-003": { completedPercent: 0 },
+    },
+
     activeQuests: [],
   };
 }
