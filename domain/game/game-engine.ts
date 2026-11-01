@@ -77,10 +77,12 @@ function handleCompleteQuest(questId: string, game: GameState): GameState {
     ...quest,
     completedAt: new Date().toISOString(),
   };
-  newGameState.completedQuests = [...game.completedQuests, completedQuest];
-  newGameState.activeQuests = game.activeQuests.filter(
-    (quest) => quest.id !== questId,
-  );
+
+  newGameState = {
+    ...newGameState,
+    completedQuests: [...newGameState.completedQuests, completedQuest],
+    activeQuests: game.activeQuests.filter((quest) => quest.id !== questId),
+  };
 
   newGameState = awardLevelAndRank(newGameState);
   newGameState = updateCampaignProgress(questMetadata.campaign, newGameState);

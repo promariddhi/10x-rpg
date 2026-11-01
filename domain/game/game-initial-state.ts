@@ -1,3 +1,4 @@
+import { campaignList } from "@/data/campaigns";
 import { GameState } from "../types/game-state";
 
 export function getInitialState(): GameState {
@@ -18,11 +19,9 @@ export function getInitialState(): GameState {
     },
     completedQuests: [],
 
-    campaignProgress: {
-      "campaign-001": { completedPercent: 0 },
-      "campaign-002": { completedPercent: 0 },
-      "campaign-003": { completedPercent: 0 },
-    },
+    campaignProgress: Object.fromEntries(
+      campaignList.map((campaign) => [campaign.id, { completedPercent: 0 }]),
+    ),
 
     activeQuests: [],
   };
