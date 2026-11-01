@@ -12,8 +12,5 @@ function dispatch(action: GameActions) {
   console.log("");
 }
 
-dispatch({ type: "START_QUEST", questId: questList[2].id });
-dispatch({ type: "START_QUEST", questId: questList[3].id });
-dispatch({ type: "COMPLETE_QUEST", questId: questList[2].id });
-dispatch({ type: "COMPLETE_QUEST", questId: questList[3].id });
-dispatch({ type: "MARK_INCOMPLETE", questId: questList[2].id });
+dispatch({ type: "START_QUEST", questId: questList[0].id });
+dispatch({ type: "COMPLETE_QUEST", questId: questList[0].id });

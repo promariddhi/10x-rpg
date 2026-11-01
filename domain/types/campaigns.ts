@@ -7,6 +7,5 @@ export type Campaign = {
 };
 
 export type CampaignProgress = {
-  id: string;
   completedPercent: number;
 };

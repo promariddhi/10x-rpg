@@ -1,10 +1,15 @@
 import { questList } from "@/data/quests";
 import { GameActions } from "../types/game-actions";
 import { GameState } from "../types/game-state";
-import { awardXp, revokeXp } from "../progression/xp";
+import {
+  awardCampaignXp,
+  awardQuestXp,
+  revokeQuestXp,
+} from "../progression/xp";
 import { QuestCompletion } from "../types/quests";
 import { awardLevelAndRank } from "../progression/level-rank";
 import { updateCampaignProgress } from "../progression/campaign";
+import { campaignList } from "@/data/campaigns";
 
 export function updateGame(action: GameActions, game: GameState): GameState {
   switch (action.type) {
@@ -58,7 +63,14 @@ function handleCompleteQuest(questId: string, game: GameState): GameState {
     throw new Error("Quest not found!");
   }
 
-  let newGameState = awardXp(questMetadata, game);
+  const campaignMetadata = campaignList.find(
+    (campaign) => campaign.id === questMetadata.campaign,
+  );
+  if (!campaignMetadata) {
+    throw new Error("Campaign not found!");
+  }
+
+  let newGameState = awardQuestXp(questMetadata, game);
 
   const completedQuest: QuestCompletion = {
     ...quest,
@@ -71,6 +83,12 @@ function handleCompleteQuest(questId: string, game: GameState): GameState {
 
   newGameState = awardLevelAndRank(newGameState);
   newGameState = updateCampaignProgress(questMetadata.campaign, newGameState);
+  if (
+    game.campaignProgress[campaignMetadata.id].completedPercent < 100 &&
+    newGameState.campaignProgress[campaignMetadata.id].completedPercent === 100
+  ) {
+    newGameState = awardCampaignXp(campaignMetadata, newGameState);
+  }
 
   return newGameState;
 }
@@ -102,6 +120,13 @@ function handleMarkIncomplete(questId: string, game: GameState): GameState {
     throw new Error("Quest not found!");
   }
 
+  const campaignMetadata = campaignList.find(
+    (campaign) => campaign.id === questMetadata.campaign,
+  );
+  if (!campaignMetadata) {
+    throw new Error("Campaign not found!");
+  }
+
   let newGameState = {
     ...game,
     completedQuests: game.completedQuests.filter(
@@ -109,9 +134,16 @@ function handleMarkIncomplete(questId: string, game: GameState): GameState {
     ),
   };
 
-  newGameState = revokeXp(questMetadata, newGameState);
+  newGameState = revokeQuestXp(questMetadata, newGameState);
   newGameState = awardLevelAndRank(newGameState);
   newGameState = updateCampaignProgress(questMetadata.campaign, newGameState);
+
+  if (
+    game.campaignProgress[campaignMetadata.id].completedPercent === 100 &&
+    newGameState.campaignProgress[campaignMetadata.id].completedPercent < 100
+  ) {
+    newGameState = awardCampaignXp(campaignMetadata, newGameState);
+  }
 
   return newGameState;
 }

@@ -1,10 +1,40 @@
+import { Campaign } from "../types/campaigns";
 import { GameState } from "../types/game-state";
 import { Quest } from "../types/quests";
 import { SkillId } from "../types/skills";
 
-export function awardXp(questMetadata: Quest, game: GameState): GameState {
+export function awardQuestXp(questMetadata: Quest, game: GameState): GameState {
   let newGameState = awardTotalXp(questMetadata, game);
   newGameState = awardSkillXp(questMetadata, newGameState);
+  return newGameState;
+}
+
+export function awardCampaignXp(
+  campaignMetadata: Campaign,
+  game: GameState,
+): GameState {
+  return {
+    ...game,
+    totalXp: game.totalXp + campaignMetadata.completionXpReward,
+  };
+}
+
+export function revokeCampaignXp(
+  campaignMetadata: Campaign,
+  game: GameState,
+): GameState {
+  return {
+    ...game,
+    totalXp: game.totalXp - campaignMetadata.completionXpReward,
+  };
+}
+
+export function revokeQuestXp(
+  questMetadata: Quest,
+  game: GameState,
+): GameState {
+  let newGameState = revokeTotalXp(questMetadata, game);
+  newGameState = revokeSkillXp(questMetadata, newGameState);
   return newGameState;
 }
 
@@ -26,12 +56,6 @@ function awardSkillXp(questMetadata: Quest, game: GameState): GameState {
   }
 
   return { ...game, skills: skills };
-}
-
-export function revokeXp(questMetadata: Quest, game: GameState): GameState {
-  let newGameState = revokeTotalXp(questMetadata, game);
-  newGameState = revokeSkillXp(questMetadata, newGameState);
-  return newGameState;
 }
 
 function revokeTotalXp(questMetadata: Quest, game: GameState): GameState {
