@@ -4,6 +4,7 @@ import { GameState } from "../types/game-state";
 import {
   awardCampaignXp,
   awardQuestXp,
+  revokeCampaignXp,
   revokeQuestXp,
 } from "../progression/xp";
 import { QuestCompletion } from "../types/quests";
@@ -142,7 +143,7 @@ function handleMarkIncomplete(questId: string, game: GameState): GameState {
     game.campaignProgress[campaignMetadata.id].completedPercent === 100 &&
     newGameState.campaignProgress[campaignMetadata.id].completedPercent < 100
   ) {
-    newGameState = awardCampaignXp(campaignMetadata, newGameState);
+    newGameState = revokeCampaignXp(campaignMetadata, newGameState);
   }
 
   return newGameState;
