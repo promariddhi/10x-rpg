@@ -85,7 +85,7 @@ function handleCompleteQuest(questId: string, game: GameState): GameState {
   };
 
   newGameState = awardLevelAndRank(newGameState);
-  newGameState = updateCampaignProgress(questMetadata.campaign, newGameState);
+  newGameState = updateCampaignProgress(campaignMetadata, newGameState);
   if (
     game.campaignProgress[campaignMetadata.id].completedPercent < 100 &&
     newGameState.campaignProgress[campaignMetadata.id].completedPercent === 100
@@ -139,7 +139,7 @@ function handleMarkIncomplete(questId: string, game: GameState): GameState {
 
   newGameState = revokeQuestXp(questMetadata, newGameState);
   newGameState = awardLevelAndRank(newGameState);
-  newGameState = updateCampaignProgress(questMetadata.campaign, newGameState);
+  newGameState = updateCampaignProgress(campaignMetadata, newGameState);
 
   if (
     game.campaignProgress[campaignMetadata.id].completedPercent === 100 &&
