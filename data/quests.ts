@@ -1,14 +1,14 @@
-import { Quest } from "@/domain/types/quests";
+import { Quest } from "@/domain/types/quest";
 
 export const questList: Quest[] = [
   {
     id: "debug-001",
     title: "The Vanishing Variable",
     campaign: "campaign-001",
-    xpReward: 100,
+    xpReward: 1000,
     skillReward: {
       "software-engineering": 20,
-      "debugging-performance": 80,
+      "debugging-performance": 880,
       "application-security": 0,
       "ai-engineering": 0,
       "architecture-systems": 0,

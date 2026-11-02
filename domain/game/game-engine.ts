@@ -1,30 +1,42 @@
 import { questList } from "@/data/quests";
-import { GameActions } from "../types/game-actions";
-import { GameState } from "../types/game-state";
+import { GameActions } from "../types/game/game-actions";
+import { GameState } from "../types/game/game-state";
 import {
   awardCampaignXp,
   awardQuestXp,
   revokeCampaignXp,
   revokeQuestXp,
 } from "../progression/xp";
-import { QuestCompletion } from "../types/quests";
+import { QuestCompletion } from "../types/quest";
 import { awardLevelAndRank } from "../progression/level-rank";
 import { updateCampaignProgress } from "../progression/campaign";
 import { campaignList } from "@/data/campaigns";
+import { EventTrigger } from "../types/game/game-events";
+import { evaluateEvents } from "../events/events";
+import { evaluateAchievements } from "../events/achievement";
 
 export function updateGame(action: GameActions, game: GameState): GameState {
+  let newGame: GameState;
   switch (action.type) {
     case "START_QUEST":
-      return handleStartQuest(action.questId, game);
+      newGame = handleStartQuest(action.questId, game);
+      break;
     case "COMPLETE_QUEST":
-      return handleCompleteQuest(action.questId, game);
+      newGame = handleCompleteQuest(action.questId, game);
+      break;
     case "ABANDON_QUEST":
-      return handleAbandonQuest(action.questId, game);
+      newGame = handleAbandonQuest(action.questId, game);
+      break;
     case "MARK_INCOMPLETE":
-      return handleMarkIncomplete(action.questId, game);
+      newGame = handleMarkIncomplete(action.questId, game);
+      break;
     default:
       throw new Error("Unknown game action");
   }
+
+  const eventsTriggered: EventTrigger[] = evaluateEvents(game, newGame);
+  newGame = evaluateAchievements(eventsTriggered, game, newGame);
+  return newGame;
 }
 
 function handleStartQuest(questId: string, game: GameState): GameState {
@@ -50,6 +62,10 @@ function handleStartQuest(questId: string, game: GameState): GameState {
         startedAt: new Date().toISOString(),
       },
     ],
+    statistics: {
+      ...game.statistics,
+      totalQuestsStarted: game.statistics["totalQuestsStarted"] + 1,
+    },
   };
 }
 
@@ -57,6 +73,10 @@ function handleCompleteQuest(questId: string, game: GameState): GameState {
   const quest = game.activeQuests.find((quest) => quest.id === questId);
   if (!quest) {
     throw new Error("Quest not active");
+  }
+
+  if (game.completedQuests.some((q) => q.id === questId)) {
+    throw new Error("Quest already completed!");
   }
 
   const questMetadata = questList.find((quest) => quest.id === questId);
@@ -81,7 +101,13 @@ function handleCompleteQuest(questId: string, game: GameState): GameState {
   newGameState = {
     ...newGameState,
     completedQuests: [...newGameState.completedQuests, completedQuest],
-    activeQuests: game.activeQuests.filter((quest) => quest.id !== questId),
+    activeQuests: newGameState.activeQuests.filter(
+      (quest) => quest.id !== questId,
+    ),
+    statistics: {
+      ...newGameState.statistics,
+      totalQuestsCompleted: newGameState.statistics["totalQuestsCompleted"] + 1,
+    },
   };
 
   newGameState = awardLevelAndRank(newGameState);
@@ -91,9 +117,17 @@ function handleCompleteQuest(questId: string, game: GameState): GameState {
     newGameState.campaignProgress[campaignMetadata.id].completedPercent === 100
   ) {
     newGameState = awardCampaignXp(campaignMetadata, newGameState);
+    newGameState = {
+      ...newGameState,
+      statistics: {
+        ...newGameState.statistics,
+        totalCampaignsCompleted:
+          newGameState.statistics["totalCampaignsCompleted"] + 1,
+      },
+    };
   }
 
-  return newGameState;
+  return { ...newGameState };
 }
 
 function handleAbandonQuest(questId: string, game: GameState): GameState {
@@ -110,6 +144,10 @@ function handleAbandonQuest(questId: string, game: GameState): GameState {
   return {
     ...game,
     activeQuests: game.activeQuests.filter((quest) => quest.id !== questId),
+    statistics: {
+      ...game.statistics,
+      totalQuestsAbandoned: game.statistics["totalQuestsAbandoned"] + 1,
+    },
   };
 }
 

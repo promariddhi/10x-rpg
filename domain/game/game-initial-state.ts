@@ -23,10 +23,11 @@ export function getInitialState(): GameState {
     activeQuests: [],
 
     statistics: {
-      questCompleted: 0,
-      campaignsCompleted: 0,
+      totalQuestsCompleted: 0,
+      totalCampaignsCompleted: 0,
       totalQuestsStarted: 0,
       totalQuestsAbandoned: 0,
+      totalAchievementsUnlocked: 0,
     },
     unlockedAchievements: [],
   };

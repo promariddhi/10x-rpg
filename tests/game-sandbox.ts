@@ -1,7 +1,7 @@
 import { questList } from "@/data/quests";
 import { updateGame } from "@/domain/game/game-engine";
 import { getInitialState } from "@/domain/game/game-initial-state";
-import { GameActions } from "@/domain/types/game-actions";
+import { GameActions } from "@/domain/types/game/game-actions";
 
 let game = getInitialState();
 

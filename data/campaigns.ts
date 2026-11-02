@@ -1,4 +1,4 @@
-import { Campaign } from "@/domain/types/campaigns";
+import { Campaign } from "@/domain/types/campaign";
 
 export const campaignList: Campaign[] = [
   {

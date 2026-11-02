@@ -1,4 +1,4 @@
-import { SkillId } from "./skills";
+import { SkillId } from "./skill";
 
 export type Quest = {
   id: string;

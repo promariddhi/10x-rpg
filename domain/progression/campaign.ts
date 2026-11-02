@@ -1,5 +1,5 @@
-import { GameState } from "../types/game-state";
-import { Campaign } from "../types/campaigns";
+import { GameState } from "../types/game/game-state";
+import { Campaign } from "../types/campaign";
 
 export function updateCampaignProgress(
   campaignMetadata: Campaign,

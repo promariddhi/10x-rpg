@@ -1,7 +1,7 @@
-import { Campaign } from "../types/campaigns";
-import { GameState } from "../types/game-state";
-import { Quest } from "../types/quests";
-import { SkillId } from "../types/skills";
+import { Campaign } from "../types/campaign";
+import { GameState } from "../types/game/game-state";
+import { Quest } from "../types/quest";
+import { SkillId } from "../types/skill";
 
 export function awardQuestXp(questMetadata: Quest, game: GameState): GameState {
   let newGameState = awardTotalXp(questMetadata, game);
