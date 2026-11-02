@@ -1,5 +1,6 @@
-import { GameState } from "../types/game-state";
-import { Rank } from "../types/ranks";
+import { GameState } from "../types/game/game-state";
+import { Rank } from "../types/rank";
+import { SkillId, SkillProgress } from "../types/skill";
 
 export function awardLevelAndRank(game: GameState): GameState {
   const level: number = Math.trunc(game.totalXp / 100);
@@ -7,6 +8,12 @@ export function awardLevelAndRank(game: GameState): GameState {
     ...game,
     level: level,
     rank: getRankFromLevel(level),
+    skills: Object.fromEntries(
+      Object.entries(game.skills).map(([skillId, progress]) => [
+        skillId,
+        { ...progress, level: Math.trunc(progress.xp / 100) },
+      ]),
+    ) as Record<SkillId, SkillProgress>,
   };
 }
 

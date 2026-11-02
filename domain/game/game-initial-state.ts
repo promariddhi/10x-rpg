@@ -1,5 +1,7 @@
 import { campaignList } from "@/data/campaigns";
-import { GameState } from "../types/game-state";
+import { GameState } from "../types/game/game-state";
+import { skills } from "@/data/skills";
+import { SkillId, SkillProgress } from "../types/skill";
 
 export function getInitialState(): GameState {
   return {
@@ -9,14 +11,9 @@ export function getInitialState(): GameState {
     level: 0,
     rank: "D",
 
-    skills: {
-      "software-engineering": { xp: 0 },
-      "ai-engineering": { xp: 0 },
-      "application-security": { xp: 0 },
-      "architecture-systems": { xp: 0 },
-      "debugging-performance": { xp: 0 },
-      "business-product": { xp: 0 },
-    },
+    skills: Object.fromEntries(
+      skills.map((skill) => [skill.id, { xp: 0, level: 0 }]),
+    ) as Record<SkillId, SkillProgress>,
     completedQuests: [],
 
     campaignProgress: Object.fromEntries(
@@ -24,5 +21,13 @@ export function getInitialState(): GameState {
     ),
 
     activeQuests: [],
+
+    statistics: {
+      questCompleted: 0,
+      campaignsCompleted: 0,
+      totalQuestsStarted: 0,
+      totalQuestsAbandoned: 0,
+    },
+    unlockedAchievements: [],
   };
 }
