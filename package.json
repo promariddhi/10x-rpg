@@ -28,7 +28,8 @@
     "tsx": "^4.23.15",
     "typescript": "^5",
     "vite-tsconfig-paths": "^6.1.1",
-    "vitest": "^5.0.5"
+    "vitest": "^5.0.5",
+    "vite": "latest"
   },
   "packageManager": "pnpm@11.8.0"
 }
